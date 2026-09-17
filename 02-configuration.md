@@ -297,7 +297,7 @@ This structure will be used in the next portion of the project to demonstrate th
 
 Continue to the ticket lifecycle demonstration:
 
-### [Part 3 — Ticket Lifecycle →](ticket-lifecycle.md)
+### [Part 3 — Ticket Lifecycle →](03-ticket-lifecycle.md)
 
 ---
 
