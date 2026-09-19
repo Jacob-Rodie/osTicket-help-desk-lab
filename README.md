@@ -1,4 +1,4 @@
-# osTicket Help Desk Deployment, Configuration & Ticket Lifecycle Lab
+# osTicket Help Desk Deployment, Configuration & Ticket Lifecycle
 
 ## Project Summary
 
