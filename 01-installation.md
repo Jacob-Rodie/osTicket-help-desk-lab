@@ -1,5 +1,7 @@
-# 01-installation.md
+# Part 1 — Installing osTicket
+
 [🏠 Main Project](README.md) | [Next: Post-Installation Configuration →](02-configuration.md)
+
 ## Overview
 
 In this part of the project, I built the Windows environment that would host my osTicket help desk.
