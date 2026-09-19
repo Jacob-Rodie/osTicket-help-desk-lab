@@ -8,20 +8,31 @@ For this project, I wanted to build a working help desk environment from the gro
 
 I deployed osTicket on a Windows 11 Enterprise virtual machine in Microsoft Azure and configured the components it depends on: IIS for the web server, PHP for the application runtime, and MySQL for the database.
 
-The final environment used:
-
-- Windows 11 Enterprise
-- Microsoft Azure
-- Internet Information Services (IIS)
-- PHP 7.3.8
-- PHP Manager for IIS
-- IIS URL Rewrite Module
-- Microsoft Visual C++ Redistributable
-- MySQL Server 5.5.62
-- HeidiSQL
-- osTicket v1.15.8
-
 The Azure VM creation itself is covered in my other infrastructure projects, so this walkthrough begins with preparing Windows to host osTicket.
+
+## Technologies Used
+
+* Microsoft Azure
+* Microsoft Remote Desktop
+* Windows 11 Enterprise
+* Internet Information Services (IIS)
+* PHP
+* MySQL
+* HeidiSQL
+* osTicket
+
+## Prerequisites
+
+The following software and services were used to build the osTicket environment:
+
+* Microsoft Azure Virtual Machine — Windows 11 Enterprise 25H2
+* osTicket v1.15.8
+* MySQL Server v5.5.62 (win32)
+* HeidiSQL v12.3.0.6589
+* PHP 7.3.8 NTS (Win32 VC15 x86)
+* PHP Manager for IIS v1.5.0
+* IIS URL Rewrite Module 2
+* Microsoft Visual C++ 2015–2022 Redistributable (x86) — 14.34.31931
 
 ---
 
@@ -85,10 +96,10 @@ After installation, I ran the MySQL configuration wizard using the Standard Conf
 
 The final screen confirmed that:
 
-- The configuration file was created
-- The MySQL Windows service was installed
-- The service started successfully
-- Security settings were applied
+* The configuration file was created
+* The MySQL Windows service was installed
+* The service started successfully
+* Security settings were applied
 
 ![MySQL Server configured](images/installation/08-mysql-server-configured.png)
 
@@ -158,15 +169,13 @@ After the restart, I was able to open the osTicket installer locally.
 
 ## Checking the osTicket Prerequisites
 
-One thing I liked about this part of the installation was that osTicket performs its own prerequisite check.
+When I first opened the osTicket installer, it showed which PHP components were available and which recommended extensions were still missing.
 
-When I first opened the installer, it showed which PHP components were available and which recommended extensions were still missing.
+I returned to PHP Manager and enabled:
 
-I returned to PHP Manager and enabled the extensions used by the lab:
-
-- `php_imap.dll`
-- `php_intl.dll`
-- `php_opcache.dll`
+* `php_imap.dll`
+* `php_intl.dll`
+* `php_opcache.dll`
 
 I then refreshed the osTicket installer.
 
@@ -174,9 +183,7 @@ I then refreshed the osTicket installer.
 
 The required PHP and MySQL components were detected successfully.
 
-One thing I noticed was that `php_opcache.dll` showed as enabled in PHP Manager, while osTicket still displayed Zend OPcache as unavailable. Because it was listed as a recommended component rather than a required one, it did not prevent the installation from continuing.
-
-That was a useful reminder that the application’s own prerequisite check is more important than assuming a setting worked just because it was enabled in another tool.
+One thing I noticed was that `php_opcache.dll` showed as enabled in PHP Manager while osTicket still displayed Zend OPcache as unavailable. Because it was listed as a recommended rather than required component, it did not prevent the installation from continuing.
 
 ---
 
@@ -210,9 +217,9 @@ Once the server requirements were ready, I continued to the main osTicket instal
 
 The installer asked for three main sets of information:
 
-- Help desk settings
-- The first administrator account
-- MySQL database connection information
+* Help desk settings
+* The first administrator account
+* MySQL database connection information
 
 Before completing the database section, I created the database osTicket would use.
 
@@ -246,9 +253,9 @@ I returned to the osTicket installer and entered the help desk, administrator, a
 
 For the database connection, I used:
 
-- **Hostname:** `localhost`
-- **Database:** `osTicket`
-- **MySQL user:** `root`
+* **Hostname:** `localhost`
+* **Database:** `osTicket`
+* **MySQL user:** `root`
 
 Sensitive account information has been obscured in the screenshot.
 
@@ -272,7 +279,7 @@ At that point, osTicket provided two main interfaces:
 
 `http://localhost/osTicket/`
 
-This is the side of the system where users submit and follow support requests.
+This is where users can submit and follow support requests.
 
 ### Staff Control Panel
 
