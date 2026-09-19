@@ -2,156 +2,121 @@
 
 ## Project Summary
 
-This project demonstrates the deployment, configuration, and operation of **osTicket** in a simulated IT help desk environment.
+This project documents the deployment and configuration of an **osTicket help desk environment** designed to simulate the workflow of an entry-level IT support team.
 
-The project covers the complete setup and use of a ticketing system, beginning with installation and prerequisite configuration, followed by help desk administration, and ending with realistic ticket lifecycle scenarios.
+I built the environment on a Windows 11 Enterprise virtual machine hosted in Microsoft Azure, configured the web and database services required to run osTicket, and documented the implementation from installation through help desk configuration and ticket handling.
 
-The purpose of this lab was to gain hands-on experience with tools and workflows commonly used by entry-level IT support and help desk professionals.
+The project is organized into three connected sections:
 
----
+1. **Installation** — Deploying osTicket and its supporting services
+2. **Post-Installation Configuration** — Configuring the help desk environment
+3. **Ticket Lifecycle** — Working support tickets from submission through resolution
 
-## Environments and Technologies Used
-
-### Environment
-
-* Windows 11
-* Local virtual machine/lab environment
-
-### Technologies and Applications
-
-* osTicket
-* Internet Information Services (IIS)
-* PHP
-* MySQL / MariaDB
-* Web Browser
-
-### Languages Used
-
-* None
+The goal of the project is to demonstrate practical experience with ticketing systems, user support, troubleshooting, documentation, prioritization, escalation, and other skills commonly used in Help Desk and Technical Support roles.
 
 ---
 
-## Skills Demonstrated
+## Environment and Technologies
 
-* Help Desk Support
-* Ticket Management
-* Troubleshooting
-* Application Installation
-* User and Agent Management
-* Role-Based Access Control
-* Service Level Agreement Management
-* Incident Prioritization
-* Ticket Escalation
-* Technical Documentation
-* End-User Communication
+- Microsoft Azure
+- Windows 11 Enterprise
+- Microsoft Remote Desktop
+- Internet Information Services (IIS)
+- osTicket v1.15.8
+- PHP 7.3.8
+- PHP Manager for IIS
+- IIS URL Rewrite Module
+- MySQL Server 5.5.62
+- HeidiSQL
+- Microsoft Visual C++ Redistributable
+
+## Languages Used
+
+No scripting or programming languages were required for this implementation.
+
+Configuration was completed through Windows administration tools, IIS Manager, PHP Manager, HeidiSQL, and the osTicket administrative interface.
 
 ---
 
-# Project Overview
+## What This Project Demonstrates
 
-This project is divided into three sections:
+This project focuses on skills relevant to entry-level IT Support and Help Desk positions, including:
+
+- Deploying and configuring a ticketing system
+- Working with Windows-based server components
+- Configuring IIS and PHP
+- Connecting a web application to a MySQL database
+- Managing help desk users and agents
+- Configuring roles and permissions
+- Organizing departments and support teams
+- Creating Service Level Agreements (SLAs)
+- Configuring Help Topics
+- Prioritizing and assigning support tickets
+- Troubleshooting user issues
+- Escalating tickets when appropriate
+- Documenting troubleshooting steps and resolutions
+- Closing and maintaining support tickets
 
 ---
 
-## Part 1 — Prerequisites & Installation
+# Project Walkthrough
 
-The first portion of the project focuses on preparing the Windows environment and installing the components required to run osTicket.
+## Part 1 — osTicket Installation
 
-This includes:
+The first part of the project covers building the environment required to run osTicket.
 
-* Enabling IIS
-* Installing PHP
-* Installing and configuring MySQL / MariaDB
-* Installing osTicket
-* Configuring permissions
-* Completing the web-based installation
-* Verifying that the help desk portal is operational
+I configured IIS as the web server, installed and registered PHP, configured MySQL, created the osTicket database, deployed the application into the IIS web root, and completed the web-based installation.
 
-### [View Part 1 — Installation →](01-installation.md)
+![osTicket installation complete](images/installation/21-osticket-installation-complete.png)
+
+[View Part 1 — Installation](01-installation.md)
 
 ---
 
 ## Part 2 — Post-Installation Configuration
 
-After osTicket was successfully installed, I configured the system to simulate a functioning organizational help desk.
+The second part focuses on turning the fresh osTicket installation into a usable help desk environment.
 
-This included configuring:
+Configuration includes:
 
-* Roles and permissions
-* Departments
-* Teams
-* Agents
-* Users
-* Service Level Agreements
-* Help Topics
-* Ticket settings
+- System settings
+- Roles and permissions
+- Departments
+- Teams
+- Agents
+- Users
+- Service Level Agreements
+- Help Topics
+- Ticket settings
+- User access and authentication settings
 
-### [View Part 2 — Post-Installation Configuration →](02-configuration.md)
+[View Part 2 — Post-Installation Configuration](02-configuration.md)
 
 ---
 
 ## Part 3 — Ticket Lifecycle
 
-The final portion of the project demonstrates how support requests move through the help desk ticket lifecycle.
+The third part demonstrates how the configured help desk is used to handle support requests.
 
-I simulated common IT support scenarios and practiced:
+Support scenarios are worked from the perspective of both the end user submitting the issue and the support agent responsible for resolving it.
 
-* Reviewing submitted tickets
-* Determining impact and urgency
-* Assigning priorities
-* Applying SLAs
-* Assigning tickets to agents and departments
-* Documenting troubleshooting
-* Escalating tickets when necessary
-* Resolving issues
-* Closing tickets
-
-### [View Part 3 — Ticket Lifecycle →](03-ticket-lifecycle.md)
-
----
-
-# Help Desk Workflow
-
-The overall project follows the workflow below:
+The ticket workflow includes:
 
 ```text
-Install osTicket
-      ↓
-Configure Help Desk
-      ↓
-Create Users and Agents
-      ↓
-Configure Departments and SLAs
-      ↓
-Submit Support Tickets
-      ↓
-Assess Priority and Impact
-      ↓
-Troubleshoot
-      ↓
-Escalate if Required
-      ↓
-Document Resolution
-      ↓
-Close Ticket
-```
-
----
-
-## Project Documentation
-
-### [Part 1 — osTicket Installation](01-installation.md)
-
-### [Part 2 — osTicket Post-Installation Configuration](02-configuration.md)
-
-### [Part 3 — osTicket Ticket Lifecycle](03-ticket-lifecycle.md)
-
----
-
-## What I Learned
-
-This project helped me better understand how a help desk ticketing system supports the day-to-day work of IT support professionals.
-
-I gained practical experience with installing and configuring a ticketing platform, organizing support teams, managing ticket priorities and SLAs, documenting troubleshooting steps, and working through support requests from creation to resolution.
-
-The project also reinforced the importance of clear documentation, effective communication, structured troubleshooting, and knowing when an issue should be escalated to another technician or department.
+User submits support request
+        ↓
+Ticket enters help desk queue
+        ↓
+Agent reviews the issue
+        ↓
+Priority and SLA are evaluated
+        ↓
+Ticket is assigned
+        ↓
+Troubleshooting is performed
+        ↓
+Escalation when appropriate
+        ↓
+Resolution is documented
+        ↓
+Ticket is closed
