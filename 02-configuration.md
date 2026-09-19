@@ -4,37 +4,37 @@
 
 ## Overview
 
-After installing osTicket, I configured the platform into a structured help desk environment for ticket handling.
+With osTicket installed and running, I configured the platform into a structured help desk environment that could support realistic ticket handling.
 
-The goal of this stage was to define how users access support, how support staff are organized, what permissions agents receive, how urgent incidents are handled, and how tickets are categorized when submitted.
+This stage focused on controlling user access, organizing support staff, defining permissions, creating an escalation path, and establishing how urgent support requests would be categorized and handled.
 
 The configuration included:
 
 - User authentication and registration settings
-- Roles
+- Roles and permissions
 - Departments
-- Teams
+- Support teams
 - Support agents
 - Service Level Agreements (SLAs)
 - Help Topics
 
-These settings provide the structure used during the ticket lifecycle scenarios in Part 3.
+These settings provide the structure used in the ticket lifecycle scenarios in Part 3.
 
 ---
 
 ## Configuring User Access
 
-I first reviewed how end users would access the help desk.
+I started by configuring how end users would access the help desk.
 
-For this environment, I configured osTicket so that users must have an account and log in before creating tickets.
+For this environment, users are required to register and log in before creating tickets.
 
-Registration was set to:
+Registration was configured as:
 
 **Private — Only agents can register users**
 
 ![User authentication settings](images/configuration/01-user-authentication-settings.png)
 
-The configuration also includes:
+Additional authentication settings included:
 
 - 4 failed login attempts before lockout
 - 2-minute account lockout
@@ -42,19 +42,19 @@ The configuration also includes:
 - Authentication tokens enabled
 - Email verification required when checking ticket status
 
-This gives the help desk more control over who can create and access support requests.
+This configuration gives the help desk more control over who can create and access support requests.
 
 ---
 
-## Configuring Roles
+## Configuring Roles and Permissions
 
-Roles determine what agents can do inside osTicket.
+Roles determine what agents are allowed to do inside osTicket.
 
-The environment includes the standard osTicket roles, plus a **Master Admin** role for higher-level administrative access.
+I reviewed the available roles and added a **Master Admin** role for higher-level administrative access.
 
 ![Roles configured in osTicket](images/configuration/02-roles-list.png)
 
-The available roles include:
+The available roles included:
 
 - All Access
 - Expanded Access
@@ -62,46 +62,44 @@ The available roles include:
 - Master Admin
 - View Only
 
-Using roles separates administrative access from normal ticket-handling responsibilities.
+Using roles allows administrative permissions to be separated from normal ticket-handling responsibilities.
 
 ---
 
 ## Creating the System Administrators Department
 
-Departments organize support staff and control where tickets can be assigned.
+Departments provide an organizational structure for agents and tickets.
 
-I created a **System Administrators** department for administrative or higher-level technical responsibilities.
+I created a **System Administrators** department for higher-level technical and administrative responsibilities.
 
 ![System Administrators department](images/configuration/03-system-administrators-department.png)
 
-The department was configured as:
+The department was configured with:
 
 - **Name:** System Administrators
 - **Status:** Active
 - **Type:** Public
 - **Ticket Assignment:** All
 
-This provides a separate organizational area from the standard Support department.
+This gives the help desk a separate area for issues that require more advanced technical support than the standard Support department.
 
 ---
 
 ## Creating a Level II Support Team
 
-I also created a **Level II Support** team.
+I created a **Level II Support** team to provide an escalation path for issues that cannot be resolved during initial troubleshooting.
 
 ![Level II Support team](images/configuration/04-level-ii-support-team.png)
 
-Teams provide another way to organize agents without changing their primary department.
+The team was configured as active and can be used to bring additional technical experience into a ticket without changing the overall department structure.
 
-This gives the help desk a structure to use for escalation when an issue requires more advanced troubleshooting.
-
-For example:
+A basic escalation path can now look like:
 
 ```text
 Support Agent
      ↓
-Initial troubleshooting
+Initial Troubleshooting
      ↓
-Issue requires additional expertise
+Issue Requires Additional Expertise
      ↓
 Level II Support
