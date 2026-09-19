@@ -4,7 +4,7 @@
 
 ## Overview
 
-This section covers the preparation of the Windows environment used to host the osTicket help desk.
+This section covers preparing the Windows environment used to host the osTicket help desk.
 
 Rather than beginning with a preconfigured ticketing system, the environment is built by installing and connecting the individual components osTicket depends on: **IIS** as the web server, **PHP** to process the application, and **MySQL** to store its data.
 
@@ -62,7 +62,7 @@ IIS receives the web request, PHP processes the osTicket application, and MySQL 
 
 ## Preparing IIS
 
-osTicket is a PHP web application, so the Windows environment first requires a web server capable of hosting it.
+osTicket is a PHP web application, so the Windows environment first needs a web server to host it.
 
 For this environment, **Internet Information Services (IIS)** is used.
 
@@ -112,7 +112,7 @@ Keeping PHP in its own directory gives IIS a consistent location for the PHP exe
 
 ## Setting Up MySQL
 
-osTicket uses a database to store information such as tickets, users, departments, and application settings.
+osTicket uses a database to store tickets, users, departments, and application settings.
 
 Install **MySQL Server 5.5.62** using the Typical setup.
 
@@ -199,13 +199,13 @@ Then start IIS again:
 
 ![Start IIS](images/installation/14-start-iis.png)
 
-After the restart, the osTicket installer can be opened locally.
+After the restart, you can open the osTicket Installer locally.
 
 ---
 
 ## Checking the osTicket Prerequisites
 
-When the osTicket installer opens, it performs a prerequisite check and shows which PHP components are available.
+When the osTicket Installer opens, it performs a prerequisite check and shows which PHP components are available.
 
 Several recommended extensions need to be enabled through PHP Manager:
 
@@ -213,7 +213,7 @@ Several recommended extensions need to be enabled through PHP Manager:
 * `php_intl.dll`
 * `php_opcache.dll`
 
-After enabling the extensions, refresh the osTicket installer to verify the changes.
+After enabling the extensions, refresh the osTicket Installer to verify the changes.
 
 ![PHP extensions verification](images/installation/15-php-extensions-verification.png)
 
@@ -227,7 +227,7 @@ Because osTicket listed Zend OPcache as a **recommended** rather than **required
 
 ## Preparing the osTicket Configuration File
 
-Before continuing with the installer, prepare the configuration file that osTicket uses to store its settings.
+Before continuing with the Installer, prepare the configuration file that osTicket uses to store its settings.
 
 Navigate to:
 
@@ -241,7 +241,7 @@ to:
 
 `ost-config.php`
 
-Temporarily give the installer permission to write to this file so the application configuration can be saved.
+Temporarily give the installer permission to write to this file so it can save the application configuration.
 
 Once the installation is complete, the file permissions will be restricted again.
 
@@ -253,21 +253,19 @@ Continue to the main **osTicket Basic Installation** page.
 
 ![osTicket Basic Installation](images/installation/16-osticket-basic-installation.png)
 
-The installer requires three main groups of information:
+The Installer requires three main groups of information:
 
 * Help desk settings
 * The initial administrator account
 * MySQL database connection information
 
-Before completing the database portion of the form, create the database that osTicket will use.
+Before completing the database portion of the form, create the Database that osTicket will use.
 
 ---
 
 ## Creating the osTicket Database
 
-Install **HeidiSQL** to manage the local MySQL server.
-
-![HeidiSQL installed](images/installation/17-heidisql-installed.png)
+Install **HeidiSQL** to manage the local MySQL server.DatabaseiSQL installed](images/installation/17-heidisql-installed.png)
 
 After connecting to MySQL, right-click the server connection and select:
 
@@ -281,13 +279,13 @@ Create a new database named:
 
 ![Create osTicket database](images/installation/19-create-osticket-database.png)
 
-This database becomes the backend used by the ticketing system.
+This Database serves as the ticketing system's backend.
 
 ---
 
 ## Connecting osTicket to MySQL
 
-Return to the osTicket installer and complete the system, administrator, and database settings.
+Return to the osTicket Installer and complete the system, administrator, and database settings.
 
 For the database connection, use:
 
@@ -299,11 +297,9 @@ Because MySQL and osTicket are running on the same virtual machine, the database
 
 `localhost`
 
-Sensitive account information is obscured in the screenshot.
+The screenshot obscures sensitive account information.
 
-![osTicket installation configured](images/installation/20-osticket-installation-configured.png)
-
-After reviewing the configuration, begin the installation.
+![osTicket installation configured](images/installation/20-osticket-installation-configuredDatabaDatabaseeviewing the configuration, begin the installation.
 
 ---
 
@@ -335,7 +331,7 @@ Then change the permissions on:
 
 back to **Read-only**.
 
-The configuration file requires write access during installation, but it no longer needs to remain writable once the application settings have been saved.
+The configuration file requires write access during installation, but it no longer needs to be writable once the application settings are saved.
 
 This completes the installation portion of the project.
 
