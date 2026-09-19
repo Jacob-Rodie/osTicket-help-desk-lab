@@ -4,11 +4,13 @@
 
 ## Overview
 
-For this project, I wanted to build a working help desk environment from the ground up rather than only use an already-configured ticketing system.
+In this part of the project, I built the Windows environment that would host my osTicket help desk.
 
-I deployed osTicket on a Windows 11 Enterprise virtual machine in Microsoft Azure and configured the components it depends on: IIS for the web server, PHP for the application runtime, and MySQL for the database.
+Rather than starting with an already-configured ticketing system, I installed and connected the individual components osTicket depends on: **IIS** as the web server, **PHP** to run the application, and **MySQL** to store its data.
 
-The Azure VM creation itself is covered in my other infrastructure projects, so this walkthrough begins with preparing Windows to host osTicket.
+The environment was hosted on a **Windows 11 Enterprise virtual machine in Microsoft Azure**.
+
+Azure VM creation is covered separately in my [Active Directory User Management & Administration](https://github.com/Jacob-Rodie/active-directory-user-management) project, so this walkthrough begins with preparing Windows to host osTicket.
 
 ## Technologies Used
 
@@ -21,11 +23,9 @@ The Azure VM creation itself is covered in my other infrastructure projects, so 
 * HeidiSQL
 * osTicket
 
-## Prerequisites
+## Software & Installation Components
 
-The following software and services were used to build the osTicket environment:
-
-* Microsoft Azure Virtual Machine — Windows 11 Enterprise 25H2
+* Microsoft Azure Virtual Machine — Windows 11 Enterprise 25H2, Gen2
 * osTicket v1.15.8
 * MySQL Server v5.5.62 (win32)
 * HeidiSQL v12.3.0.6589
@@ -34,288 +34,9 @@ The following software and services were used to build the osTicket environment:
 * IIS URL Rewrite Module 2
 * Microsoft Visual C++ 2015–2022 Redistributable (x86) — 14.34.31931
 
----
+## How the Environment Fits Together
 
-## Getting IIS Ready
-
-osTicket is a PHP web application, so the first thing I needed was a web server.
-
-On Windows, I used **Internet Information Services (IIS)**.
-
-From Control Panel, I opened:
-
-**Programs → Turn Windows features on or off**
-
-![Control Panel Programs](images/installation/01-control-panel-programs.png)
-
-Inside IIS, I enabled:
-
-**World Wide Web Services → Application Development Features → CGI**
-
-![Enable IIS and CGI](images/installation/02-enable-iis-cgi.png)
-
-CGI is important here because PHP is handled through FastCGI in IIS. Without that application-development feature enabled, IIS would not be able to process the PHP application correctly.
-
----
-
-## Adding the PHP Components
-
-I installed **PHP Manager for IIS** so I could register and manage the PHP runtime directly from IIS Manager.
-
-![PHP Manager installed](images/installation/03-php-manager-installed.png)
-
-I also installed the **IIS URL Rewrite Module**.
-
-![IIS URL Rewrite installed](images/installation/04-iis-url-rewrite-installed.png)
-
-The PHP build supplied with the lab also required the Microsoft Visual C++ runtime, so I installed the included **Visual C++ Redistributable (x86)**.
-
-![Visual C++ Redistributable installed](images/installation/05-vc-redist-installed.png)
-
-I then created:
-
-`C:\PHP`
-
-and extracted PHP 7.3.8 into that directory.
-
-![PHP files extracted](images/installation/06-php-files-extracted.png)
-
-Using a dedicated `C:\PHP` directory made it easy to point IIS directly to the PHP executable later.
-
----
-
-## Setting Up the Database Server
-
-osTicket needs a database for its application data, including tickets, users, departments, configuration settings, and other help desk information.
-
-I installed **MySQL Server 5.5.62** using the Typical setup.
-
-![MySQL Server installed](images/installation/07-mysql-server-installed.png)
-
-After installation, I ran the MySQL configuration wizard using the Standard Configuration.
-
-The final screen confirmed that:
-
-* The configuration file was created
-* The MySQL Windows service was installed
-* The service started successfully
-* Security settings were applied
-
-![MySQL Server configured](images/installation/08-mysql-server-configured.png)
-
-At this point, the database server itself was running, but osTicket still needed its own database.
-
----
-
-## Connecting PHP to IIS
-
-With PHP extracted, I returned to IIS and opened **PHP Manager**.
-
-I registered:
-
-`C:\PHP\php-cgi.exe`
-
-![Select PHP CGI executable](images/installation/09-select-php-cgi.png)
-
-After registration, PHP Manager showed that IIS recognized PHP 7.3.8 and its configuration.
-
-![PHP registered in IIS](images/installation/10-php-registered-in-iis.png)
-
-This was an important checkpoint because IIS could now process PHP instead of only serving static web content.
-
----
-
-## Placing osTicket in the IIS Web Root
-
-Next, I extracted the osTicket v1.15.8 package.
-
-The application files were inside a folder named `upload`.
-
-I moved that folder into:
-
-`C:\inetpub\wwwroot`
-
-![Move osTicket to IIS web root](images/installation/11-move-osticket-to-webroot.png)
-
-I then renamed `upload` to:
-
-`osTicket`
-
-which gave me the final path:
-
-`C:\inetpub\wwwroot\osTicket`
-
-![osTicket folder in IIS web root](images/installation/12-osticket-webroot.png)
-
-`C:\inetpub\wwwroot` is the default IIS web root, so placing the application there allowed IIS to serve osTicket through the browser.
-
----
-
-## Reloading IIS
-
-After adding the application files, I restarted IIS so the web server would reload the environment.
-
-I stopped the server:
-
-![Stop IIS](images/installation/13-stop-iis.png)
-
-and then started it again:
-
-![Start IIS](images/installation/14-start-iis.png)
-
-After the restart, I was able to open the osTicket installer locally.
-
----
-
-## Checking the osTicket Prerequisites
-
-When I first opened the osTicket installer, it showed which PHP components were available and which recommended extensions were still missing.
-
-I returned to PHP Manager and enabled:
-
-* `php_imap.dll`
-* `php_intl.dll`
-* `php_opcache.dll`
-
-I then refreshed the osTicket installer.
-
-![PHP extensions verification](images/installation/15-php-extensions-verification.png)
-
-The required PHP and MySQL components were detected successfully.
-
-One thing I noticed was that `php_opcache.dll` showed as enabled in PHP Manager while osTicket still displayed Zend OPcache as unavailable. Because it was listed as a recommended rather than required component, it did not prevent the installation from continuing.
-
----
-
-## Preparing the osTicket Configuration File
-
-Before continuing, I prepared the configuration file that osTicket uses to store its installation settings.
-
-Inside:
-
-`C:\inetpub\wwwroot\osTicket\include`
-
-I renamed:
-
-`ost-sampleconfig.php`
-
-to:
-
-`ost-config.php`
-
-I temporarily allowed the installer to write to that file so it could save the application configuration.
-
-After the installation was finished, I removed that write access again.
-
----
-
-## Starting the osTicket Installer
-
-Once the server requirements were ready, I continued to the main osTicket installation page.
-
-![osTicket Basic Installation](images/installation/16-osticket-basic-installation.png)
-
-The installer asked for three main sets of information:
-
-* Help desk settings
-* The first administrator account
-* MySQL database connection information
-
-Before completing the database section, I created the database osTicket would use.
-
----
-
-## Creating the osTicket Database
-
-I installed **HeidiSQL** as a graphical client for MySQL.
-
-![HeidiSQL installed](images/installation/17-heidisql-installed.png)
-
-After connecting to the local MySQL server, I selected:
-
-**Create new → Database**
-
-![Create database in HeidiSQL](images/installation/18-create-database-menu.png)
-
-I created a database named:
-
-`osTicket`
-
-![Create osTicket database](images/installation/19-create-osticket-database.png)
-
-That database became the backend for the ticketing system.
-
----
-
-## Connecting osTicket to MySQL
-
-I returned to the osTicket installer and entered the help desk, administrator, and database settings.
-
-For the database connection, I used:
-
-* **Hostname:** `localhost`
-* **Database:** `osTicket`
-* **MySQL user:** `root`
-
-Sensitive account information has been obscured in the screenshot.
-
-![osTicket installation configured](images/installation/20-osticket-installation-configured.png)
-
-Because MySQL was running on the same virtual machine as osTicket, the database host could be referenced as `localhost`.
-
-After confirming the settings, I started the installation.
-
----
-
-## Verifying the Installation
-
-The installer completed successfully.
-
-![osTicket installation complete](images/installation/21-osticket-installation-complete.png)
-
-At that point, osTicket provided two main interfaces:
-
-### End-User Portal
-
-`http://localhost/osTicket/`
-
-This is where users can submit and follow support requests.
-
-### Staff Control Panel
-
-`http://localhost/osTicket/scp/login.php`
-
-This is where administrators and help desk agents configure the system and work tickets.
-
-Getting to this point confirmed that IIS, PHP, MySQL, and osTicket were all communicating correctly.
-
----
-
-## Post-Installation Cleanup
-
-The last part of the installation was cleaning up the installer.
-
-I deleted:
-
-`C:\inetpub\wwwroot\osTicket\setup`
-
-and changed:
-
-`C:\inetpub\wwwroot\osTicket\include\ost-config.php`
-
-back to **Read-only**.
-
-The configuration file needed write access during installation, but once the settings had been written there was no reason to leave it writable.
-
-With that complete, the installation portion of the project was finished.
-
----
-
-## What I Took Away From This
-
-The most useful part of this installation was seeing how the different pieces fit together.
-
-Before doing the project, it would have been easy to think of osTicket as one program that simply gets installed. In reality, the application depends on several separate components:
+The application stack for this project can be viewed as:
 
 ```text
 Browser
@@ -329,11 +50,267 @@ osTicket
 MySQL
 ```
 
-If one of those layers is not configured correctly, the application may not work even though the other pieces are installed.
+IIS receives the web request, PHP processes the osTicket application, and MySQL stores the help desk data.
 
-This part of the project gave me hands-on experience working with a Windows web server, PHP, services, application files, file permissions, and a MySQL database. It also gave me practice verifying each stage instead of assuming that an installation succeeded.
+---
 
-The next part of the project focuses on turning the fresh installation into an actual help desk environment by configuring departments, roles, agents, users, SLAs, Help Topics, and ticket settings.
+## Preparing IIS
+
+osTicket is a PHP web application, so I first needed a web server capable of hosting it.
+
+On Windows, I used **Internet Information Services (IIS)**.
+
+From Control Panel, I opened:
+
+**Programs → Turn Windows features on or off**
+
+![Control Panel Programs](images/installation/01-control-panel-programs.png)
+
+Under **Internet Information Services**, I navigated to:
+
+**World Wide Web Services → Application Development Features**
+
+and enabled **CGI**.
+
+![Enable IIS and CGI](images/installation/02-enable-iis-cgi.png)
+
+CGI is needed here because IIS uses FastCGI to process the PHP application.
+
+---
+
+## Installing the PHP Components
+
+I installed **PHP Manager for IIS** so I could register and manage PHP directly through IIS Manager.
+
+![PHP Manager installed](images/installation/03-php-manager-installed.png)
+
+I also installed the **IIS URL Rewrite Module** included with the installation files.
+
+![IIS URL Rewrite installed](images/installation/04-iis-url-rewrite-installed.png)
+
+The PHP build used in this environment also required the Microsoft Visual C++ runtime, so I installed the included **Visual C++ Redistributable (x86)**.
+
+![Visual C++ Redistributable installed](images/installation/05-vc-redist-installed.png)
+
+I then created:
+
+`C:\PHP`
+
+and extracted PHP 7.3.8 into that directory.
+
+![PHP files extracted](images/installation/06-php-files-extracted.png)
+
+Keeping PHP in its own directory gave IIS a consistent location for the PHP executable.
+
+---
+
+## Setting Up MySQL
+
+osTicket uses a database to store information such as tickets, users, departments, and application settings.
+
+I installed **MySQL Server 5.5.62** using the Typical setup.
+
+![MySQL Server installed](images/installation/07-mysql-server-installed.png)
+
+After the installation finished, I ran the MySQL configuration wizard using the Standard Configuration.
+
+The final screen confirmed that the configuration file had been created, the Windows service had been installed, the service had started successfully, and the security settings had been applied.
+
+![MySQL Server configured](images/installation/08-mysql-server-configured.png)
+
+At this point, MySQL itself was running. I would create the actual osTicket database later in the installation.
+
+---
+
+## Connecting PHP to IIS
+
+With PHP extracted, I returned to IIS and opened **PHP Manager**.
+
+I selected **Register new PHP version** and browsed to:
+
+`C:\PHP\php-cgi.exe`
+
+![Select PHP CGI executable](images/installation/09-select-php-cgi.png)
+
+After registering it, PHP Manager confirmed that IIS recognized PHP 7.3.8 and its configuration.
+
+![PHP registered in IIS](images/installation/10-php-registered-in-iis.png)
+
+This was an important checkpoint because IIS could now process PHP instead of only serving static web content.
+
+---
+
+## Adding osTicket to the IIS Web Root
+
+Next, I extracted the **osTicket v1.15.8** package.
+
+The application files were contained inside a folder named `upload`, which I moved into the default IIS web root:
+
+`C:\inetpub\wwwroot`
+
+![Move osTicket to IIS web root](images/installation/11-move-osticket-to-webroot.png)
+
+I then renamed the folder from `upload` to:
+
+`osTicket`
+
+The final application path became:
+
+`C:\inetpub\wwwroot\osTicket`
+
+![osTicket folder in IIS web root](images/installation/12-osticket-webroot.png)
+
+Placing the application in the IIS web root allowed IIS to serve osTicket through the browser.
+
+---
+
+## Reloading IIS
+
+After adding the osTicket application files, I restarted IIS so the web server would reload the environment.
+
+I first stopped IIS:
+
+![Stop IIS](images/installation/13-stop-iis.png)
+
+and then started it again:
+
+![Start IIS](images/installation/14-start-iis.png)
+
+After the restart, I was able to open the osTicket installer locally.
+
+---
+
+## Checking the osTicket Prerequisites
+
+When I opened the osTicket installer, it performed a prerequisite check and showed which PHP components were available.
+
+Several recommended extensions still needed to be enabled, so I returned to PHP Manager and enabled:
+
+* `php_imap.dll`
+* `php_intl.dll`
+* `php_opcache.dll`
+
+I then refreshed the osTicket installer to verify the changes.
+
+![PHP extensions verification](images/installation/15-php-extensions-verification.png)
+
+The required PHP and MySQL components were detected successfully.
+
+One thing I noticed during this step was that `php_opcache.dll` appeared enabled in PHP Manager while osTicket continued to report Zend OPcache as unavailable. Because osTicket listed it as a recommended rather than required component, it did not prevent the installation from continuing.
+
+---
+
+## Preparing the osTicket Configuration File
+
+Before continuing with the installer, I prepared the configuration file that osTicket would use to store its settings.
+
+Inside:
+
+`C:\inetpub\wwwroot\osTicket\include`
+
+I renamed:
+
+`ost-sampleconfig.php`
+
+to:
+
+`ost-config.php`
+
+I temporarily gave the installer permission to write to this file so it could save the application configuration.
+
+Once the installation was complete, I restricted those permissions again.
+
+---
+
+## Starting the osTicket Installer
+
+After the server requirements were ready, I continued to the main **osTicket Basic Installation** page.
+
+![osTicket Basic Installation](images/installation/16-osticket-basic-installation.png)
+
+The installer required three main sets of information:
+
+* Help desk settings
+* The initial administrator account
+* MySQL database connection information
+
+Before completing the database portion of the form, I created the database that osTicket would use.
+
+---
+
+## Creating the osTicket Database
+
+I installed **HeidiSQL** to manage the local MySQL server.
+
+![HeidiSQL installed](images/installation/17-heidisql-installed.png)
+
+After connecting to MySQL, I right-clicked the server connection and selected:
+
+**Create new → Database**
+
+![Create database in HeidiSQL](images/installation/18-create-database-menu.png)
+
+I created a new database named:
+
+`osTicket`
+
+![Create osTicket database](images/installation/19-create-osticket-database.png)
+
+This Database became the backend used by the ticketing system.
+
+---
+
+## Connecting osTicket to MySQL
+
+I returned to the osTicket installer and completed the system, administrator, and database settings.
+
+For the database connection, I used:
+
+* **Hostname:** `localhost`
+* **Database:** `osTicket`
+* **MySQL User:** `root`
+
+Because MySQL and osTicket ran on the same virtual machine, the database server could be referenced as `localhost`.
+
+The screenshot obscures sensitive account information.
+
+![osTicket installation configured](images/installation/20-osticket-installation-configured.png)
+
+After reviewing the configuration, I started the installation.
+
+---
+
+## Verifying the Installation
+
+The installation completed successfully.
+
+![osTicket installation complete](images/installation/21-osticket-installation-complete.png)
+
+Reaching this point confirmed that the main components of the environment were working together:
+
+**IIS → PHP → osTicket → MySQL**
+
+The next stage of the project is configuring the fresh osTicket installation into a functioning help desk environment.
+
+---
+
+## Post-Installation Cleanup
+
+Before moving on to configuration, I completed the installation cleanup steps.
+
+I deleted the installer directory:
+
+`C:\inetpub\wwwroot\osTicket\setup`
+
+I also changed the permissions on:
+
+`C:\inetpub\wwwroot\osTicket\include\ost-config.php`
+
+back to **Read-only**.
+
+The configuration file needed write access during installation, but it no longer needed to remain writable once the application settings were saved.
+
+This completed the installation portion of the project.
 
 ---
 
