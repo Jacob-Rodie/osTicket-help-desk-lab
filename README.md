@@ -2,17 +2,17 @@
 
 ## Project Summary
 
-This project documents the deployment, configuration, and operation of an **osTicket help desk environment** that demonstrates a typical entry-level IT support workflow.
+This project documents the deployment, configuration, and operation of an **osTicket help desk environment** that demonstrates a complete IT support workflow.
 
-The environment is hosted on a **Windows 11 Enterprise virtual machine in Microsoft Azure**. It includes the web server, PHP runtime, database services, help desk configuration, and ticket-handling workflow required to operate osTicket.
+The environment is hosted on a **Windows 11 Enterprise virtual machine in Microsoft Azure** and includes the web server, PHP runtime, database services, help desk administration, and ticket-handling workflow required to operate osTicket.
 
 The project is divided into three connected parts:
 
-1. **Installation** — Preparing Windows and deploying osTicket
-2. **Post-Installation Configuration** — Structuring the help desk environment
-3. **Ticket Lifecycle** — Processing support requests from intake through resolution
+1. **Installation** — Preparing the Windows environment and deploying osTicket
+2. **Post-Installation Configuration** — Configuring the help desk structure, users, support staff, permissions, SLAs, and ticket categories
+3. **Ticket Lifecycle** — Processing a business-critical support request from submission through troubleshooting, escalation, resolution, and closure
 
-Together, these sections demonstrate how a ticketing system is deployed, configured, and used to support end users.
+Together, these sections demonstrate how a help desk ticketing system is deployed, configured, and used to support end users.
 
 ---
 
@@ -42,23 +42,25 @@ Configuration was completed through Windows administration tools, IIS Manager, P
 
 ## What This Project Demonstrates
 
-The project covers practical skills commonly used in Help Desk and Technical Support environments, including:
+This project demonstrates practical skills relevant to Help Desk and Technical Support environments, including:
 
 - Deploying and configuring a ticketing system
 - Working with Windows-based application services
 - Configuring IIS and PHP
 - Connecting a web application to a MySQL database
-- Managing users and support agents
+- Managing help desk users and support agents
 - Configuring roles and permissions
 - Organizing departments and support teams
 - Creating Service Level Agreements (SLAs)
 - Configuring Help Topics
-- Controlling user authentication and registration
+- Managing user authentication and registration
+- Evaluating ticket impact and urgency
 - Prioritizing support requests
 - Assigning tickets to support personnel
-- Troubleshooting user issues
+- Documenting troubleshooting activity
 - Escalating tickets when additional expertise is required
-- Documenting troubleshooting activity and resolutions
+- Communicating resolution updates to users
+- Documenting resolutions
 - Closing completed support tickets
 
 ---
@@ -80,7 +82,22 @@ The installation includes:
 - Deploying osTicket to the IIS web root
 - Creating the osTicket database
 - Connecting osTicket to MySQL
+- Verifying the completed installation
 - Completing post-installation cleanup
+
+The application stack used throughout the project is:
+
+```text
+Browser
+   ↓
+IIS
+   ↓
+PHP
+   ↓
+osTicket
+   ↓
+MySQL
+```
 
 ![osTicket installation complete](images/installation/21-osticket-installation-complete.png)
 
@@ -102,7 +119,9 @@ The configuration includes:
 - Service Level Agreements
 - Help Topics
 
-The environment also introduces a support escalation structure using the **Support department**, **Level II Support team**, and **System Administrators department**.
+The help desk also includes an escalation structure using the **Support department**, **Level II Support**, and **System Administrators** resources.
+
+A **Sev-A SLA** was configured with a one-hour grace period on a 24/7 schedule for high-impact incidents, along with a **Business Critical Outage** Help Topic for major service disruptions.
 
 ![Support agents](images/configuration/05-agents-list.png)
 
@@ -112,37 +131,43 @@ The environment also introduces a support escalation structure using the **Suppo
 
 ## Part 3 — Ticket Lifecycle
 
-The final stage shows how the configured help desk processes support requests.
+The final stage shows how the configured help desk processes a support request from beginning to end.
 
-Three ticket scenarios are used to demonstrate different support workflows:
+A **Business Critical Outage** demonstrates the complete lifecycle of a high-impact incident affecting multiple users and preventing normal department operations.
 
-- A business-critical incident requiring higher-priority handling and escalation
-- A standard user issue resolved through Tier 1 troubleshooting
-- A routine support request handled through the normal support process
-
-The general ticket lifecycle follows:
+The ticket begins with an end user reporting a department-wide network outage and progresses through:
 
 ```text
 Ticket Submission
       ↓
 Review & Triage
       ↓
-Priority / SLA Evaluation
+Priority Increased to High
       ↓
-Assignment
+Sev-A SLA Applied
+      ↓
+Assigned to Tier 1 Support
+      ↓
+Initial Assessment
       ↓
 Troubleshooting
       ↓
-Escalation if Required
+Escalation to Level II Support
       ↓
-Resolution
+Infrastructure Issue Identified
       ↓
-Documentation
+Connectivity Restored
       ↓
-Closure
+User Notified
+      ↓
+Resolved
+      ↓
+Closed
 ```
 
-This section shows how the configuration created in Part 2 applies during actual ticket handling.
+The scenario shows how ticket history documents the reasoning behind priority changes, SLA selection, assignment, troubleshooting, escalation, and resolution.
+
+![Closed Business Critical Outage ticket](images/tickets/08-critical-ticket-closed.png)
 
 [View Part 3 — Ticket Lifecycle →](03-ticket-lifecycle.md)
 
@@ -150,7 +175,7 @@ This section shows how the configuration created in Part 2 applies during actual
 
 ## How the Three Parts Connect
 
-The project follows the same progression as a real help desk implementation:
+The project follows the progression of a complete help desk implementation:
 
 ```text
 Part 1
@@ -160,14 +185,14 @@ Part 2
 Configure the Help Desk Structure
         ↓
 Part 3
-Use the System to Process Support Requests
+Process and Resolve a Support Incident
 ```
 
-**Part 1** establishes the technical platform.
+**Part 1** establishes the technical platform required to run osTicket.
 
-**Part 2** defines how users, agents, departments, teams, SLAs, and Help Topics operate within that platform.
+**Part 2** defines how users, agents, roles, departments, teams, SLAs, and Help Topics operate within that platform.
 
-**Part 3** demonstrates how those components work together during ticket intake, troubleshooting, escalation, resolution, and closure.
+**Part 3** demonstrates how those components work together during an actual support workflow involving intake, prioritization, assignment, troubleshooting, escalation, resolution, communication, and closure.
 
 ---
 
