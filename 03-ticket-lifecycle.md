@@ -4,476 +4,250 @@
 
 ## Overview
 
-With the osTicket environment installed and configured, the final stage demonstrates how support requests move through the help desk from initial submission to resolution.
+With the osTicket environment installed and configured, this section demonstrates how a support request moves through the help desk from initial submission to final closure.
 
-Rather than treating every request the same way, each ticket is evaluated based on its impact, urgency, required support resources, and appropriate service level.
+The scenario simulates a **department-wide network outage** affecting multiple users. It was selected because it provides an opportunity to demonstrate the complete ticket lifecycle, including:
 
-Three ticket scenarios are used to demonstrate different help desk workflows:
+- Ticket intake
+- Triage and prioritization
+- SLA selection
+- Agent assignment
+- Initial assessment
+- Troubleshooting documentation
+- Escalation to Level II Support
+- Resolution documentation
+- User communication
+- Ticket closure
 
-| Ticket | Scenario | Workflow |
-|---|---|---|
-| 1 | Business Critical Outage | Critical incident with escalation |
-| 2 | User Login / Account Access Issue | Standard Tier 1 troubleshooting |
-| 3 | Routine Support Request | Lower-priority support workflow |
+Rather than creating several repetitive examples, this walkthrough follows one ticket from beginning to end so you can review the entire support process in a single audit trail.
 
-Together, the scenarios demonstrate ticket intake, triage, prioritization, assignment, troubleshooting, escalation, communication, documentation, resolution, and closure.
+---
+
+## Ticket Scenario
+
+| Field | Configuration |
+|---|---|
+| Ticket | #401355 |
+| User | Olivia Chen |
+| Issue | Department-wide network outage |
+| Help Topic | Business Critical Outage |
+| Initial Priority | Normal |
+| Updated Priority | High |
+| SLA | Sev-A |
+| Initial Department | Support |
+| Initial Agent | Daniel Brooks |
+| Escalation | Level II Support |
+| Level II Agent | Lily Mitchell |
+| Final Status | Closed |
+
+For this lifecycle demonstration, **Lily Mitchell** is used as the Level II escalation agent.
 
 ---
 
 ## Ticket Lifecycle Workflow
 
-The general support process used throughout the scenarios is:
+The incident follows this support path:
 
 ```text
-Ticket Submitted
+Ticket Submission
       ↓
-Review & Triage
+Triage
       ↓
-Determine Impact / Priority
+Priority Increased to High
       ↓
-Assign Agent / Department
+Sev-A SLA Applied
       ↓
-Select Appropriate SLA
+Assigned to Support
       ↓
-Troubleshoot
+Initial Assessment
       ↓
-Escalate if Required
+Troubleshooting
       ↓
-Document Resolution
+Escalated to Level II Support
       ↓
-Close Ticket
+Infrastructure Issue Identified
+      ↓
+Connectivity Restored
+      ↓
+User Notified
+      ↓
+Resolved
+      ↓
+Closed
 ```
-
-Not every ticket requires every step.
-
-For example, a routine account issue may be resolved by the first support agent, while a business-critical outage may require escalation to Level II Support or System Administrators.
-
----
-
-# Ticket 1 — Business Critical Outage
-
-## Scenario
-
-A user reports an issue affecting business operations.
-
-This ticket demonstrates how a high-impact incident can be identified, prioritized, assigned an appropriate SLA, investigated, and escalated when additional technical expertise is required.
-
-### Ticket Classification
-
-| Field | Configuration |
-|---|---|
-| Help Topic | Business Critical Outage |
-| Priority | High / Emergency |
-| SLA | Sev-A |
-| Initial Department | Support |
-| Escalation | Level II Support / System Administrators |
 
 ---
 
 ## Ticket Intake
 
-Open the osTicket end-user portal and create a new support request.
+The incident begins from the end-user portal.
 
-Select:
+The user selects **Business Critical Outage** as the Help Topic and reports that the department can't access the shared company drive or several internal applications.
 
-**Help Topic → Business Critical Outage**
+The description also identifies the business impact: multiple users are affected, and customer-order processing has stopped.
 
-Enter a clear issue summary and description that explains:
+![Business Critical Outage ticket submission](images/tickets/01-critical-ticket-submission.png)
 
-- What service is affected
-- Who is affected
-- When the problem began
-- What the user is experiencing
+The issue summary is kept concise:
 
-> Add a screenshot of the submitted Business Critical Outage ticket here.
+**Department-wide network outage**
 
-```markdown
-![Business Critical Outage submitted](images/tickets/01-critical-ticket-submitted.png)
-```
-
-A useful ticket description should provide enough information for the support agent to begin evaluating the issue without immediately requesting basic details from the user.
+A clear issue summary helps support staff understand the request scope before opening the full ticket.
 
 ---
 
-## Triage and Prioritization
+## Triage, Priority, and SLA
 
-Open the ticket from the Staff Control Panel and review the reported symptoms.
+After the ticket enters the help desk queue, the team reviews the reported impact.
 
-During triage, evaluate:
+The ticket is initially created with **Normal** priority. Because the outage affects multiple users and prevents the department from processing customer orders, the team increases the priority to **High**.
 
-- Number of affected users
-- Business impact
-- Urgency
-- Service availability
-- Appropriate support resources
-- Required SLA
+The ticket history documents the reason for the priority change.
 
-Because this scenario represents a significant business disruption, assign the ticket the appropriate critical priority and **Sev-A SLA**.
+The default SLA is also changed to the **Sev-A** plan configured in Part 2.
 
-> Add screenshot showing the ticket priority and SLA.
+![Ticket triage, priority, SLA, and assignment history](images/tickets/02-critical-ticket-triage.png)
 
-```markdown
-![Critical ticket triage](images/tickets/02-critical-ticket-triage.png)
-```
+The audit trail records:
 
-The Sev-A plan configured in Part 2 provides a **one-hour grace period on a 24/7 schedule**, reflecting the higher urgency of this incident type.
+- Priority changed from **Normal → High**
+- SLA changed from **Default SLA → Sev-A**
+- Ticket assigned to **Daniel Brooks**
+
+The Sev-A SLA provides a one-hour grace period on a 24/7 schedule, making it appropriate for a high-impact incident requiring prompt attention.
 
 ---
 
-## Assignment
+## Initial Assignment and Assessment
 
-Assign the ticket to the appropriate Support agent or department for initial investigation.
+The ticket is assigned to **Daniel Brooks** in the Support department for initial investigation.
 
-> Add screenshot showing assignment.
+The first internal assessment summarizes the reported symptoms and documents the next troubleshooting objective.
 
-```markdown
-![Critical ticket assigned](images/tickets/03-critical-ticket-assigned.png)
-```
+![Initial support assessment](images/tickets/03-critical-ticket-initial-assessment.png)
 
-Assignment establishes clear ownership so the ticket does not remain unassigned while troubleshooting is performed.
+The assessment records that:
 
----
+- Multiple users are affected
+- Shared network resources and internal applications are unavailable
+- Restarting affected workstations did not resolve the problem
+- Connectivity and service availability require further investigation
 
-## Initial Troubleshooting
-
-Begin troubleshooting using the information supplied in the ticket.
-
-Document each meaningful action taken during the investigation.
-
-Examples may include:
-
-- Confirming the scope of the outage
-- Verifying whether multiple users are affected
-- Checking network connectivity
-- Testing access to the affected service
-- Reviewing relevant system information
-- Determining whether the issue can be resolved by Tier 1
-
-> Add screenshot showing troubleshooting notes or ticket activity.
-
-```markdown
-![Critical ticket troubleshooting](images/tickets/04-critical-ticket-troubleshooting.png)
-```
-
-Internal notes should clearly record what you tested, what you observed, and why you took the next action.
+This provides a clear starting point for troubleshooting and preserves the reasoning in the ticket history.
 
 ---
 
-## Escalation
+## Troubleshooting and Escalation Decision
 
-If you can't resolve the issue during initial troubleshooting, escalate the ticket to the appropriate higher-level resource.
+Further troubleshooting confirms that the issue is not isolated to a single workstation.
 
-The environment configured in Part 2 provides:
+The ticket notes record that multiple endpoints are affected and that the impacted systems still cannot reach shared resources.
 
-**Level II Support**
+![Troubleshooting and escalation documentation](images/tickets/04-critical-ticket-troubleshooting-escalation.pthe impactede the symptoms indicate a broader network or service-infrastructure proble;, the issue is documented as requiring investigation beyond Tier 1 support.
 
-and:
-
-**System Administrators**
-
-for issues requiring additional technical expertise.
-
-```text
-Support
-   ↓
-Initial Troubleshooting
-   ↓
-Level II Support
-   ↓
-System Administrators
-```
-
-> Add a screenshot showing the escalation or transfer.
-
-```markdown
-![Critical ticket escalated](images/tickets/05-critical-ticket-escalated.png)
-```
-
-Escalate when the issue requires additional expertise or access, not simply because troubleshooting is difficult.
+The escalation reason is recorded before reassignment so the next support resource can understand what has already been checked and why the ticket is being escalated.
 
 ---
 
-## Resolution and Documentation
+## Escalating to Level II Support
 
-Once you address the underlying issue, document the final resolution in the ticket.
+The ticket is reassigned from **Daniel Brooks** to **Lily Mitchell** for Level II handling.
 
-A useful resolution note should explain:
+The reassignment reason states that the issue affects multiple users, is not isolated to one workstation, and appears to involve shared network or service infrastructure.
 
-- What caused the issue
-- What action corrected it
-- Whether service was restored
-- Any relevant follow-up information
+![Ticket reassigned for Level II investigation](images/tickets/05-critical-ticket-level2-reassignment.png)
 
-> Add a screenshot showing the final resolution.
-
-```markdown
-![Critical ticket resolved](images/tickets/06-critical-ticket-resolved.png)
-```
-
-After confirming the issue is resolved, change the ticket status to **Closed**.
-
----
-
-## Ticket 1 Outcome
-
-This scenario demonstrates:
-
-- Critical incident intake
-- Impact-based prioritization
-- Sev-A SLA usage
-- Ticket ownership
-- Troubleshooting documentation
-- Level II / System Administrator escalation
-- Resolution
-- Ticket closure
-
----
-
-# Ticket 2 — User Login / Account Access Issue
-
-## Scenario
-
-A user reports being unable to access an account or service.
-
-Unlike the Business Critical Outage scenario, this issue affects a single user and can be handled through the normal Tier 1 support process.
-
-### Ticket Classification
-
-| Field | Configuration |
-|---|---|
-| Issue Type | Account / Login Issue |
-| Impact | Single User |
-| Initial Department | Support |
-| Escalation | Not required unless troubleshooting fails |
-
----
-
-## Ticket Intake
-
-Submit the issue through the end-user portal with a clear description of the login problem.
-
-> Add a screenshot of Ticket 2 submission.
-
-```markdown
-![Login issue submitted](images/tickets/07-login-ticket-submitted.png)
-```
-
----
-
-## Triage and Assignment
-
-Review the request from the Staff Control Panel.
-
-Because the problem affects a single user rather than a business-wide service, it should not receive the same priority or SLA treatment as the critical outage.
-
-Assign the ticket to a Support agent.
-
-> Add a screenshot showing Ticket 2 assignment.
-
-```markdown
-![Login issue assigned](images/tickets/08-login-ticket-assigned.png)
-```
-
----
-
-## Troubleshooting
-
-Troubleshoot the issue using an appropriate process.
-
-Possible checks may include:
-
-- Confirming the username
-- Confirming the affected application or system
-- Checking whether credentials are being entered correctly
-- Determining whether the account is locked
-- Testing access after corrective action
-- Confirming successful login with the user
-
-Document only the actions actually performed during the scenario.
-
-> Add a screenshot showing troubleshooting documentation.
-
-```markdown
-![Login issue troubleshooting](images/tickets/09-login-ticket-troubleshooting.png)
-```
+Documenting the reason for escalation helps prevent duplicated troubleshooting and gives the receiving agent the context needed to continue the investigation.
 
 ---
 
 ## Resolution
 
-Document the corrective action and communicate the resolution to the user.
+Level II Support identifies a connectivity issue affecting the network switch servicing the department.
 
-> Add a screenshot of the resolution.
+The resolution note documents that the switch uplink was restored and access to the shared company drive and internal applications was re-established.
 
-```markdown
-![Login issue resolved](images/tickets/10-login-ticket-resolved.png)
-```
+![Technical resolution documented](images/tickets/06-critical-ticket-resolution-note.png)
 
-Once access has been restored and verified, close the ticket.
+The ticket also records that connectivity was verified from multiple affected workstations before the incident was considered resolved.
 
----
-
-## Ticket 2 Outcome
-
-This scenario demonstrates:
-
-- Single-user incident handling
-- Tier 1 troubleshooting
-- Appropriate prioritization
-- Agent communication
-- Resolution documentation
-- Ticket closure without unnecessary escalation
+A useful resolution note should explain both **what caused the issue** and **what action restored service**.
 
 ---
 
-# Ticket 3 — Routine Support Request
+## User Communication
 
-## Scenario
+After the service is restored, the user receives a final update confirming the network issue has been resolved.
 
-The third ticket represents a routine support request, such as a printer issue or software-related request.
+The response confirms that access to the shared drive and internal applications has been restored and verified.
 
-This demonstrates how lower-impact tickets can be handled without applying the same urgency used for outages or service-affecting incidents.
+The ticket status is then changed to **Resolved**.
 
-### Ticket Classification
+![User notified and ticket marked resolved](images/tickets/07-critical-ticket-user-resolution.png)
 
-| Field | Configuration |
-|---|---|
-| Request Type | Routine Support |
-| Impact | Low / Individual User |
-| Department | Support |
-| Escalation | Only if required |
+This gives the user a clear outcome without exposing unnecessary internal troubleshooting details.
 
 ---
 
-## Ticket Intake
+## Ticket Closure
 
-Create the request through the end-user portal.
+After documenting the resolution and notifying the user, the ticket is removed from the active queue.
 
-Include enough information for the support agent to understand the problem and begin troubleshooting.
+The ticket is then verified in the **Closed** queue.
 
-> Add screenshot of Ticket 3 submission.
+![Closed ticket verification](images/tickets/08-critical-ticket-closed.png)
 
-```markdown
-![Routine request submitted](images/tickets/11-routine-ticket-submitted.png)
-```
+The closed-ticket record confirms:
 
----
-
-## Assessment and Assignment
-
-Review the request and determine its priority based on impact and urgency.
-
-Assign the request to the appropriate Support agent.
-
-> Add a screenshot showing assignment and priority.
-
-```markdown
-![Routine request assigned](images/tickets/12-routine-ticket-assigned.png)
-```
-
-This scenario demonstrates that not every ticket should be treated as a high-priority incident.
-
-Correct prioritization helps the help desk focus resources on the requests with the greatest business impact.
+- Ticket **#401355**
+- Subject: **Department wide network outage**
+- Submitted by **Olivia Chen**
+- Closed by **Lily Mitchell**
+- Final ticket status: **Closed**
 
 ---
 
-## Troubleshooting
+## Ticket Outcome
 
-Perform the appropriate troubleshooting steps and document the results.
-
-The ticket history should provide a clear record of:
-
-- Symptoms reported
-- Checks performed
-- Changes made
-- User communication
-- Final result
-
-> Add a screenshot showing troubleshooting activity.
-
-```markdown
-![Routine request troubleshooting](images/tickets/13-routine-ticket-troubleshooting.png)
-```
-
----
-
-## Resolution and Closure
-
-Once you've corrected the issue, provide the user with a clear resolution message.
-
-Document what resolved the issue before closing the ticket.
-
-> Add a screenshot showing Ticket 3 resolution.
-
-```markdown
-![Routine request resolved](images/tickets/14-routine-ticket-resolved.png)
-```
-
----
-
-## Ticket 3 Outcome
-
-This scenario demonstrates:
-
-- Routine ticket intake
-- Appropriate prioritization
-- Standard agent assignment
-- Troubleshooting
-- User communication
-- Documentation
-- Closure
-
----
-
-# Comparing the Three Ticket Workflows
-
-The three scenarios demonstrate that ticket handling changes depending on the impact and complexity of the issue.
-
-| Workflow Area | Critical Outage | Login Issue | Routine Request |
-|---|---|---|---|
-| Business Impact | High | Individual User | Low / Individual |
-| Urgency | Critical | Standard | Routine |
-| SLA | Sev-A | Appropriate standard SLA | Appropriate standard SLA |
-| Initial Support | Support | Support | Support |
-| Escalation | Level II / System Administrators | Only if required | Only if required |
-| Troubleshooting | Multi-stage | Tier 1 | Routine |
-| Documentation | Detailed incident history | Resolution notes | Resolution notes |
-| Final Status | Closed | Closed | Closed |
-
-Prioritization and escalation are not meant to make every ticket follow the same path. It ensures each request receives the level of attention appropriate to its business impact and technical requirements.
-
----
-
-# Ticket Lifecycle Complete
-
-At this stage, the osTicket environment has been demonstrated from initial deployment through actual ticket handling.
-
-The complete project now covers:
+This scenario demonstrates the complete lifecycle of a high-impact support incident:
 
 ```text
-Part 1
-osTicket Installation
+User reports outage
       ↓
-Part 2
-Help Desk Configuration
+Support reviews business impact
       ↓
-Part 3
-Ticket Intake & Triage
+Priority raised to High
       ↓
-Assignment
+Sev-A SLA applied
       ↓
-Troubleshooting
+Ticket assigned to Tier 1 Support
       ↓
-Escalation
+Initial assessment documented
       ↓
-Resolution
+Troubleshooting performed
       ↓
-Documentation
+Issue escalated with documented reason
       ↓
-Closure
+Level II identifies infrastructure issue
+      ↓
+Service restored and verified
+      ↓
+User receives resolution update
+      ↓
+Ticket closed
 ```
 
-The three scenarios show how the help desk configuration created in Part 2 applies to different types of support requests while maintaining clear ownership, prioritization, communication, and documentation.
+The ticket history provides a continuous record of the decisions made throughout the incident, including prioritization, ownership, troubleshooting, escalation, resolution, and closure.
+
+This completes the osTicket project workflow established across the three parts:
+
+```text
+Part 1 — Installation
+        ↓
+Part 2 — Post-Installation Configuration
+        ↓
+Part 3 — Ticket Lifecycle
+```
 
 ---
 
